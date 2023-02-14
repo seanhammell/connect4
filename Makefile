@@ -1,6 +1,6 @@
 CC = clang
-OBJ = src/main.c src/state.c
-FLAGS = -g -Werror
+OBJ = src/main.c src/state.c src/texture.c
+FLAGS = -g -Werror -std=c89
 INC = -I .
 LIBS = -l SDL2 -l SDL2_image
 TARGET = connect

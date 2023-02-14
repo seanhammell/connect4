@@ -6,12 +6,10 @@
 
 #ifndef STATE_INTERNAL
 #define STATE_INTERNAL
-
 typedef struct state {
     SDL_Window *window;
     SDL_Renderer *renderer;
 } State;
-
 #endif /* STATE_INTERNAL */
 
 #include "src/state.h"
