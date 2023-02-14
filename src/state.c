@@ -26,23 +26,6 @@ State *state_create(void)
 }
 
 /**
- * Destroys a State object.
- */
-void state_destroy(State *self)
-{
-    SDL_DestroyRenderer(self->renderer);
-    SDL_DestroyWindow(self->window);
-    free(self);
-
-    self->renderer = NULL;
-    self->window = NULL;
-    self = NULL;
-
-    IMG_Quit();
-    SDL_Quit();
-}
-
-/**
  * Initializes SDL and State members.
  */
 int state_initialize(State *self)
@@ -75,4 +58,29 @@ int state_initialize(State *self)
     }
 
     return 0;
+}
+
+/**
+ * Destroys a State object.
+ */
+void state_destroy(State *self)
+{
+    SDL_DestroyRenderer(self->renderer);
+    SDL_DestroyWindow(self->window);
+    free(self);
+
+    self->renderer = NULL;
+    self->window = NULL;
+    self = NULL;
+
+    IMG_Quit();
+    SDL_Quit();
+}
+
+/**
+ * Returns the renderer.
+ */
+SDL_Renderer *state_get_renderer(State *self)
+{
+    return self->renderer;
 }

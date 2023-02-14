@@ -6,8 +6,9 @@ typedef void State;
 #endif /* STATE_INTERNAL */
 
 State *state_create(void);
+int state_initialize(State *self);
 void state_destroy(State *self);
 
-int state_initialize(State *self);
+SDL_Renderer *state_get_renderer(State *self);
 
 #endif /* STATE_H */

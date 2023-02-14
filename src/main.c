@@ -8,8 +8,9 @@ int main(int argc, char *argv[])
     State *state = state_create();
     state_initialize(state);
 
-    Texture *texture = texture_create();
-    texture_destroy(texture);
+    Texture *sprites = texture_create();
+    texture_initialize(sprites, state_get_renderer(state), "./img/sprites.png");
+    SDL_Rect clips[4];
 
     SDL_Event event;
     for (;;) {
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    texture_destroy(sprites);
     state_destroy(state);
     return 0;
 }
