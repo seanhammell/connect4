@@ -5,7 +5,8 @@
 #define BOARD_INTERNAL
 
 typedef struct board {
-    uint64_t board;
+    uint64_t position;
+    uint64_t mask;
     int side;
 } Board;
 
@@ -17,7 +18,8 @@ typedef struct board {
 Board *board_create(void)
 {
     Board *self = malloc(sizeof(Board));
-    self->board = 0;
+    self->position = 0;
+    self->mask = 0;
     self->side = 0;
     return self;
 }
