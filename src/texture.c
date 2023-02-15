@@ -11,6 +11,7 @@ typedef struct texture {
     SDL_Texture *texture;
     int width;
     int height;
+    SDL_Rect clips[4];
 } Texture;
 
 #endif /* TEXTURE_INTERNAL */
@@ -37,8 +38,6 @@ void reset(Texture *self)
     if (self->texture != NULL) {
         SDL_DestroyTexture(self->texture);
         self->texture = NULL;
-        self->width = 0;
-        self->height = 0;
     }
 }
 
@@ -65,6 +64,15 @@ int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
     self->texture = new;
     self->width = sprites->w;
     self->height = sprites->h;
+
+    int i;
+    for (i = 0; i < N_SPRITES; ++i) {
+        self->clips[i].x = 64 * (i % 2);
+        self->clips[i].y = 64 * (i / 2);
+        self->clips[i].w = 64;
+        self->clips[i].h = 64;
+    }
+
     SDL_FreeSurface(sprites);
 
     if (self->texture == NULL) {
@@ -87,8 +95,12 @@ void texture_destroy(Texture *self)
 /**
  * Renders the Texture to the screen.
  */
-void texture_render(const Texture *self, SDL_Renderer *renderer, const int x, const int y)
+void texture_render(const Texture *self, SDL_Renderer *renderer, enum sprites clip, const int x, const int y)
 {
     SDL_Rect quad = { x, y, self->width, self->height };
-    SDL_RenderCopy(renderer, self->texture, NULL,  &quad);
+    if (clip != EMPTY) {
+        quad.w = self->clips[clip].w;
+        quad.h = self->clips[clip].h;
+    }
+    SDL_RenderCopy(renderer, self->texture, &self->clips[clip],  &quad);
 }

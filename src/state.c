@@ -96,6 +96,13 @@ void state_render(State *self, Texture *sprites)
 {
     SDL_SetRenderDrawColor(self->renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(self->renderer);
-    texture_render(sprites, self->renderer, 0, 0);
+
+    int row, col;
+    for (row = 0; row < 6; ++row) {
+        for (col = 0; col < 7; ++col) {
+            texture_render(sprites, self->renderer, SLOT, 64 * col, 64 * row);
+        }
+    }
+
     SDL_RenderPresent(self->renderer);
 }
