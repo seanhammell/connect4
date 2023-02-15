@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include <src/texture.h>
+
 #ifndef STATE_INTERNAL
 #define STATE_INTERNAL
 
@@ -85,4 +87,15 @@ void state_destroy(State *self)
 SDL_Renderer *state_get_renderer(State *self)
 {
     return self->renderer;
+}
+
+/**
+ * Renders the current Board to the screen.
+ */
+void state_render(State *self, Texture *sprites)
+{
+    SDL_SetRenderDrawColor(self->renderer, 0xff, 0xff, 0xff, 0xff);
+    SDL_RenderClear(self->renderer);
+    texture_render(sprites, self->renderer, 0, 0);
+    SDL_RenderPresent(self->renderer);
 }
