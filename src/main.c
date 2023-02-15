@@ -20,6 +20,11 @@ int main(int argc, char *argv[])
                 return 0;
             }
         }
+
+        SDL_SetRenderDrawColor(state_get_renderer(state), 0xff, 0xff, 0xff, 0xff);
+        SDL_RenderClear(state_get_renderer(state));
+        texture_render(sprites, state_get_renderer(state), 0, 0);
+        SDL_RenderPresent(state_get_renderer(state));
     }
 
     texture_destroy(sprites);

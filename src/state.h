@@ -2,7 +2,9 @@
 #define STATE_H
 
 #ifndef STATE_INTERNAL
+
 typedef void State;
+
 #endif /* STATE_INTERNAL */
 
 State *state_create(void);

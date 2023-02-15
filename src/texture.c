@@ -6,11 +6,13 @@
 
 #ifndef TEXTURE_INTERNAL
 #define TEXTURE_INTERNAL
+
 typedef struct texture {
     SDL_Texture *texture;
     int width;
     int height;
 } Texture;
+
 #endif /* TEXTURE_INTERNAL */
 
 #include "src/texture.h"
@@ -80,4 +82,13 @@ void texture_destroy(Texture *self)
     reset(self);
     free(self);
     self = NULL;
+}
+
+/**
+ * Renders the Texture to the screen.
+ */
+void texture_render(const Texture *self, SDL_Renderer *renderer, const int x, const int y)
+{
+    SDL_Rect quad = { x, y, self->width, self->height };
+    SDL_RenderCopy(renderer, self->texture, NULL,  &quad);
 }
