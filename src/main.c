@@ -2,6 +2,7 @@
 
 #include "src/state.h"
 #include "src/texture.h"
+#include "src/board.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +12,8 @@ int main(int argc, char *argv[])
     Texture *sprites = texture_create();
     texture_initialize(sprites, state_get_renderer(state), "./img/sprites.png");
     SDL_Rect clips[4];
+
+    Board *board = board_create();
 
     SDL_Event event;
     for (;;) {
@@ -27,6 +30,7 @@ int main(int argc, char *argv[])
         SDL_RenderPresent(state_get_renderer(state));
     }
 
+    board_destroy(board);
     texture_destroy(sprites);
     state_destroy(state);
     return 0;
