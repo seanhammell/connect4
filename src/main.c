@@ -23,6 +23,19 @@ int main(int argc, char *argv[])
                 state_destroy(state);
                 return 0;
             }
+
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_LEFT:
+                        hover_col = hover_col == 0 ? hover_col : hover_col - 1;
+                        hover_row = board_get_open_row_in_col(board, hover_col);
+                        break;
+                    case SDLK_RIGHT:
+                        hover_col = hover_col == 6 ? hover_col : hover_col + 1;
+                        hover_row = board_get_open_row_in_col(board, hover_col);
+                        break;
+                }
+            }
         }
 
         state_render(state, sprites, board, hover_row, hover_col);
