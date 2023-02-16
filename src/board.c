@@ -22,7 +22,7 @@ Board *board_create(void)
     for (i = 0; i < 42; ++i) {
         self->board[i] = 0;
     }
-    self->side = 0;
+    self->side = 2;
     return self;
 }
 
@@ -36,9 +36,32 @@ void board_destroy(Board *self)
 }
 
 /**
+ * Returns the current side to move.
+ */
+int board_get_side(const Board *self)
+{
+    return self->side;
+}
+
+/**
  * Returns the piece at the given index.
  */
 int board_get_piece_at_index(const Board *self, const int i)
 {
     return self->board[i];
+}
+
+/**
+ * Returns the row of the first open slot in the given column.
+ */
+int board_get_open_row_in_col(const Board *self, const int col)
+{
+    int row;
+    for (row = 5; row >= 0; --row) {
+        if (self->board[6 * row + col] == 0) {
+            break;
+        }
+    }
+
+    return row;
 }

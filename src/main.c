@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
     Board *board = board_create();
 
     SDL_Event event;
+    int hover_row = 5;
+    int hover_col = 0;
     for (;;) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        state_render(state, sprites, board);
+        state_render(state, sprites, board, hover_row, hover_col);
     }
 
     board_destroy(board);

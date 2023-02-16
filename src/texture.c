@@ -93,6 +93,14 @@ void texture_destroy(Texture *self)
 }
 
 /**
+ * Sets the alpha value of the texture.
+ */
+void texture_set_alpha(Texture *self, const int alpha)
+{
+    SDL_SetTextureAlphaMod(self->texture, alpha);
+}
+
+/**
  * Renders the Texture to the screen.
  */
 void texture_render(const Texture *self, SDL_Renderer *renderer, int clip, const int x, const int y)

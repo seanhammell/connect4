@@ -13,6 +13,7 @@ Texture *texture_create(void);
 int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path);
 void texture_destroy(Texture *self);
 
+void texture_set_alpha(Texture *self, const int alpha);
 void texture_render(const Texture *self, SDL_Renderer *renderer, int clip, const int x, const int y);
 
 #endif /* TEXTURE_H */

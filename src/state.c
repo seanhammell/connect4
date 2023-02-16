@@ -101,7 +101,7 @@ SDL_Renderer *state_get_renderer(const State *self)
 /**
  * Renders the current Board to the screen.
  */
-void state_render(const State *self, const Texture *sprites, const Board *board)
+void state_render(const State *self, Texture *sprites, const Board *board, const int hover_row, const int hover_col)
 {
     SDL_SetRenderDrawColor(self->renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(self->renderer);
@@ -114,6 +114,11 @@ void state_render(const State *self, const Texture *sprites, const Board *board)
             texture_render(sprites, self->renderer, piece_clip, 64 * col, 64 * row);
         }
     }
+
+    texture_set_alpha(sprites, 192);
+    int current_side = board_get_side(board);
+    texture_render(sprites, self->renderer, current_side, 64 * hover_col, 64 * hover_row);
+    texture_set_alpha(sprites, 255);
 
     SDL_RenderPresent(self->renderer);
 }

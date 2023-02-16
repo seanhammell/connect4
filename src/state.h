@@ -16,6 +16,6 @@ void state_destroy(State *self);
 
 SDL_Renderer *state_get_renderer(const State *self);
 
-void state_render(const State *self, const Texture *sprites, const Board *board);
+void state_render(const State *self, Texture *sprites, const Board *board, const int hover_row, const int hover_col);
 
 #endif /* STATE_H */
