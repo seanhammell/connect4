@@ -1,14 +1,14 @@
-#include <stdint.h>
 #include <stdlib.h>
 
 #ifndef BOARD_INTERNAL
 #define BOARD_INTERNAL
 
 typedef struct board {
-    uint64_t position;
-    uint64_t mask;
+    int board[42];
     int side;
 } Board;
+
+#endif /* BOARD_INTERNAL */
 
 #include "src/board.h"
 
@@ -18,8 +18,10 @@ typedef struct board {
 Board *board_create(void)
 {
     Board *self = malloc(sizeof(Board));
-    self->position = 0;
-    self->mask = 0;
+    int i;
+    for (i = 0; i < 42; ++i) {
+        self->board[i] = 0;
+    }
     self->side = 0;
     return self;
 }
@@ -33,4 +35,10 @@ void board_destroy(Board *self)
     self = NULL;
 }
 
-#endif /* BOARD_INTERNAL */
+/**
+ * Returns the piece at the given index.
+ */
+int board_get_piece_at_index(const Board *self, const int i)
+{
+    return self->board[i];
+}

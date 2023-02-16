@@ -10,4 +10,6 @@ typedef void Board;
 Board *board_create(void);
 void board_destroy(Board *self);
 
+int board_get_piece_at_index(const Board *self, const int i);
+
 #endif /* BOARD_H */

@@ -5,6 +5,15 @@
 #include <SDL2/SDL_image.h>
 
 #include <src/texture.h>
+#include <src/board.h>
+
+enum elements {
+    EMPTY,
+    SLOT,
+    RED_PIECE,
+    YELLOW_PIECE,
+    N_ELEMENTS
+};
 
 #ifndef STATE_INTERNAL
 #define STATE_INTERNAL
@@ -84,7 +93,7 @@ void state_destroy(State *self)
 /**
  * Returns the renderer.
  */
-SDL_Renderer *state_get_renderer(State *self)
+SDL_Renderer *state_get_renderer(const State *self)
 {
     return self->renderer;
 }
@@ -92,7 +101,7 @@ SDL_Renderer *state_get_renderer(State *self)
 /**
  * Renders the current Board to the screen.
  */
-void state_render(State *self, Texture *sprites)
+void state_render(const State *self, const Texture *sprites, const Board *board)
 {
     SDL_SetRenderDrawColor(self->renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(self->renderer);
@@ -101,6 +110,8 @@ void state_render(State *self, Texture *sprites)
     for (row = 0; row < 6; ++row) {
         for (col = 0; col < 7; ++col) {
             texture_render(sprites, self->renderer, SLOT, 64 * col, 64 * row);
+            int piece_clip = board_get_piece_at_index(board, 7 * row + col);
+            texture_render(sprites, self->renderer, piece_clip, 64 * col, 64 * row);
         }
     }
 

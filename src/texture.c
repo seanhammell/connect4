@@ -66,7 +66,7 @@ int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
     self->height = sprites->h;
 
     int i;
-    for (i = 0; i < N_SPRITES; ++i) {
+    for (i = 0; i < 4; ++i) {
         self->clips[i].x = 64 * (i % 2);
         self->clips[i].y = 64 * (i / 2);
         self->clips[i].w = 64;
@@ -95,10 +95,10 @@ void texture_destroy(Texture *self)
 /**
  * Renders the Texture to the screen.
  */
-void texture_render(const Texture *self, SDL_Renderer *renderer, enum sprites clip, const int x, const int y)
+void texture_render(const Texture *self, SDL_Renderer *renderer, int clip, const int x, const int y)
 {
     SDL_Rect quad = { x, y, self->width, self->height };
-    if (clip != EMPTY) {
+    if (clip) {
         quad.w = self->clips[clip].w;
         quad.h = self->clips[clip].h;
     }

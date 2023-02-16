@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        state_render(state, sprites);
+        state_render(state, sprites, board);
     }
 
     board_destroy(board);
