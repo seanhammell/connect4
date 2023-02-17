@@ -58,10 +58,19 @@ int board_get_open_row_in_col(const Board *self, const int col)
 {
     int row;
     for (row = 5; row >= 0; --row) {
-        if (self->board[6 * row + col] == 0) {
+        if (self->board[7 * row + col] == 0) {
             break;
         }
     }
 
     return row;
+}
+
+/**
+ * Adds a piece for the current side at the specified location.
+ */
+void board_place_piece(Board *self, const int row, const int col)
+{
+    self->board[7 * row + col] = self->side;
+    self->side ^= 1;
 }

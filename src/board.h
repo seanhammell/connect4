@@ -14,4 +14,6 @@ int board_get_side(const Board *self);
 int board_get_piece_at_index(const Board *self, const int i);
 int board_get_open_row_in_col(const Board *self, const int col);
 
+void board_place_piece(Board *self, const int row, const int col);
+
 #endif /* BOARD_H */

@@ -26,6 +26,11 @@ int main(int argc, char *argv[])
 
             if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
+                    case SDLK_RETURN:
+                        board_place_piece(board, hover_row, hover_col);
+                        hover_row = board_get_open_row_in_col(board, 0);
+                        hover_col = 0;
+                        break;
                     case SDLK_LEFT:
                         hover_col = hover_col == 0 ? hover_col : hover_col - 1;
                         hover_row = board_get_open_row_in_col(board, hover_col);
