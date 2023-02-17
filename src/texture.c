@@ -46,15 +46,19 @@ void reset(Texture *self)
  */
 int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
 {
+    SDL_Surface *sprites = NULL;
+    SDL_Texture *new = NULL;
+    int i;
+
     reset(self);
 
-    SDL_Surface *sprites = IMG_Load(path);
+    sprites = IMG_Load(path);
     if (sprites == NULL) {
         fprintf(stderr, "Error creating texture: %s\n", SDL_GetError());
         return 1;
     }
 
-    SDL_Texture *new = SDL_CreateTextureFromSurface(renderer, sprites);
+    new = SDL_CreateTextureFromSurface(renderer, sprites);
     if (new == NULL) {
         fprintf(stderr, "Error creating texture: %s\n", SDL_GetError());
         SDL_FreeSurface(sprites);
@@ -65,7 +69,6 @@ int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
     self->width = sprites->w;
     self->height = sprites->h;
 
-    int i;
     for (i = 0; i < 4; ++i) {
         self->clips[i].x = 64 * (i % 2);
         self->clips[i].y = 64 * (i / 2);

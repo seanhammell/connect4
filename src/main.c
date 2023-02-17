@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     Board *board = board_create();
 
     SDL_Event event;
-    int hover_row = 5;
+    int hover_row = 0;
     int hover_col = 0;
     for (;;) {
         while (SDL_PollEvent(&event)) {

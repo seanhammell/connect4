@@ -17,8 +17,9 @@ typedef struct board {
  */
 Board *board_create(void)
 {
-    Board *self = malloc(sizeof(Board));
     int i;
+    Board *self = malloc(sizeof(Board));
+
     for (i = 0; i < 42; ++i) {
         self->board[i] = 0;
     }
@@ -57,7 +58,8 @@ int board_get_piece_at_index(const Board *self, const int i)
 int board_get_open_row_in_col(const Board *self, const int col)
 {
     int row;
-    for (row = 5; row >= 0; --row) {
+
+    for (row = 0; row < 6; ++row) {
         if (self->board[7 * row + col] == 0) {
             break;
         }

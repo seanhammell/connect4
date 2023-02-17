@@ -7,6 +7,9 @@
 #include <src/texture.h>
 #include <src/board.h>
 
+#define X(c) (64 * c)
+#define Y(r) (64 * (5 - r))
+
 enum elements {
     EMPTY,
     SLOT,
@@ -103,21 +106,22 @@ SDL_Renderer *state_get_renderer(const State *self)
  */
 void state_render(const State *self, Texture *sprites, const Board *board, const int hover_row, const int hover_col)
 {
+    int row, col;
+
     SDL_SetRenderDrawColor(self->renderer, 0xff, 0xff, 0xff, 0xff);
     SDL_RenderClear(self->renderer);
 
-    int row, col;
-    for (row = 0; row < 6; ++row) {
-        for (col = 0; col < 7; ++col) {
-            texture_render(sprites, self->renderer, SLOT, 64 * col, 64 * row);
-            int piece_clip = board_get_piece_at_index(board, 7 * row + col);
-            texture_render(sprites, self->renderer, piece_clip, 64 * col, 64 * row);
+    for (col = 0; col < 7; ++col) {
+        for (row = 0; row < 6; ++row) {
+            texture_render(sprites, self->renderer, SLOT, X(col), Y(row));
+            int piece_clip = board_get_piece_at_index(board, 6 * col + row);
+            texture_render(sprites, self->renderer, piece_clip, X(col), Y(row));
         }
     }
 
     texture_set_alpha(sprites, 192);
     int current_side = board_get_side(board);
-    texture_render(sprites, self->renderer, current_side, 64 * hover_col, 64 * hover_row);
+    texture_render(sprites, self->renderer, current_side, X(hover_col), Y(hover_row));
     texture_set_alpha(sprites, 255);
 
     SDL_RenderPresent(self->renderer);
