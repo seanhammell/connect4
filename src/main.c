@@ -84,6 +84,12 @@ int main(int argc, char *argv[])
                 int col;
                 switch (event.key.keysym.sym) {
                     case SDLK_RETURN:
+                        board_drop_piece(board, hover_col);
+                        for (hover_col = 0; hover_col < 7; ++hover_col) {
+                            if (board_full_column(board, hover_col) == 0) {
+                                break;
+                            }
+                        }
                         break;
                     case SDLK_LEFT:
                         for (col = hover_col - 1; col > -1; --col) {

@@ -55,7 +55,7 @@ int board_full_column(const Board *self, const int col)
  * Returns the first open row in the specified column. This function should NOT
  * be called on full columns.
  */
-int hover_row(const Board *self, const int hover_col)
+int first_open_row(const Board *self, const int hover_col)
 {
     int row;
     for (row = 0; row < 6; ++row) {
@@ -65,6 +65,15 @@ int hover_row(const Board *self, const int hover_col)
     }
 
     return row;
+}
+
+/**
+ * Drops a piece in the specified column.
+ */
+void board_drop_piece(Board *self, const int col)
+{
+    self->board[6 * col + first_open_row(self, col)] = self->side;
+    self->side ^= 1;
 }
 
 /**
@@ -83,7 +92,7 @@ void board_render(const Board *self, Texture *sprites, const int hover_col)
     }
 
     texture_set_alpha(sprites, 191);
-    texture_render(sprites, self->side, 64 * hover_col, 64 * (5 - hover_row(self, hover_col)));
+    texture_render(sprites, self->side, 64 * hover_col, 64 * (5 - first_open_row(self, hover_col)));
     texture_set_alpha(sprites, 255);
 
     SDL_RenderPresent(state.renderer);
