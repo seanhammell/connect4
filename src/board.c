@@ -1,5 +1,8 @@
 #include <stdlib.h>
 
+#include "src/state.h"
+#include "src/texture.h"
+
 #ifndef BOARD_INTERNAL
 #define BOARD_INTERNAL
 
@@ -17,10 +20,8 @@ typedef struct board {
  */
 Board *board_create(void)
 {
-    int i;
     Board *self = malloc(sizeof(Board));
-
-    for (i = 0; i < 42; ++i) {
+    for (int i = 0; i < 42; ++i) {
         self->board[i] = 0;
     }
     self->side = 2;
@@ -37,42 +38,18 @@ void board_destroy(Board *self)
 }
 
 /**
- * Returns the current side to move.
+ * Renders the board to the screen.
  */
-int board_get_side(const Board *self)
+void board_render(const Board *self, const Texture *sprites)
 {
-    return self->side;
-}
+    SDL_SetRenderDrawColor(state.renderer, 0xff, 0xff, 0xff, 0xff);
+    SDL_RenderClear(state.renderer);
 
-/**
- * Returns the piece at the given index.
- */
-int board_get_piece_at_index(const Board *self, const int i)
-{
-    return self->board[i];
-}
-
-/**
- * Returns the row of the first open slot in the given column.
- */
-int board_get_open_row_in_col(const Board *self, const int col)
-{
-    int row;
-
-    for (row = 0; row < 6; ++row) {
-        if (self->board[7 * row + col] == 0) {
-            break;
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 5; j > -1; --j) {
+            texture_render(sprites, SLOT, 64 * i, 64 * j);
         }
     }
 
-    return row;
-}
-
-/**
- * Adds a piece for the current side at the specified location.
- */
-void board_place_piece(Board *self, const int row, const int col)
-{
-    self->board[7 * row + col] = self->side;
-    self->side ^= 1;
+    SDL_RenderPresent(state.renderer);
 }

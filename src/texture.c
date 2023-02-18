@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "src/state.h"
+
 #ifndef TEXTURE_INTERNAL
 #define TEXTURE_INTERNAL
 
@@ -44,21 +46,17 @@ void reset(Texture *self)
 /**
  * Initializes the Texture from the file at the given location.
  */
-int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
+int texture_initialize(Texture *self, const char *path)
 {
-    SDL_Surface *sprites = NULL;
-    SDL_Texture *new = NULL;
-    int i;
-
     reset(self);
 
-    sprites = IMG_Load(path);
+    SDL_Surface *sprites = IMG_Load(path);
     if (sprites == NULL) {
         fprintf(stderr, "Error creating texture: %s\n", SDL_GetError());
         return 1;
     }
 
-    new = SDL_CreateTextureFromSurface(renderer, sprites);
+    SDL_Texture *new = SDL_CreateTextureFromSurface(state.renderer, sprites);
     if (new == NULL) {
         fprintf(stderr, "Error creating texture: %s\n", SDL_GetError());
         SDL_FreeSurface(sprites);
@@ -69,7 +67,7 @@ int texture_initialize(Texture *self, SDL_Renderer *renderer, const char *path)
     self->width = sprites->w;
     self->height = sprites->h;
 
-    for (i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i) {
         self->clips[i].x = 64 * (i % 2);
         self->clips[i].y = 64 * (i / 2);
         self->clips[i].w = 64;
@@ -106,12 +104,12 @@ void texture_set_alpha(Texture *self, const int alpha)
 /**
  * Renders the Texture to the screen.
  */
-void texture_render(const Texture *self, SDL_Renderer *renderer, int clip, const int x, const int y)
+void texture_render(const Texture *self, const enum sprites clip, const int x, const int y)
 {
     SDL_Rect quad = { x, y, self->width, self->height };
     if (clip) {
         quad.w = self->clips[clip].w;
         quad.h = self->clips[clip].h;
     }
-    SDL_RenderCopy(renderer, self->texture, &self->clips[clip],  &quad);
+    SDL_RenderCopy(state.renderer, self->texture, &self->clips[clip],  &quad);
 }
