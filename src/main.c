@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
     Board *board = board_create();
 
     SDL_Event event;
+    int hover_col = 0;
     for (;;) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -80,18 +81,31 @@ int main(int argc, char *argv[])
             }
 
             if (event.type == SDL_KEYDOWN) {
+                int col;
                 switch (event.key.keysym.sym) {
                     case SDLK_RETURN:
                         break;
                     case SDLK_LEFT:
+                        for (col = hover_col - 1; col > -1; --col) {
+                            if (board_full_column(board, col) == 0) {
+                                hover_col = col;
+                                break;
+                            }
+                        }
                         break;
                     case SDLK_RIGHT:
+                        for (col = hover_col + 1; col < 7; ++col) {
+                            if (board_full_column(board, col) == 0) {
+                                hover_col = col;
+                                break;
+                            }
+                        }
                         break;
                 }
             }
         }
 
-        board_render(board, sprites);
+        board_render(board, sprites, hover_col);
     }
 
     board_destroy(board);

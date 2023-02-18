@@ -12,6 +12,8 @@ typedef void Board;
 Board *board_create(void);
 void board_destroy(Board *self);
 
-void board_render(const Board *self, const Texture *sprites);
+int board_full_column(const Board *self, const int col);
+
+void board_render(const Board *self, Texture *sprites, const int hover_col);
 
 #endif /* BOARD_H */
