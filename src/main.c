@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
                     }
 
                     if (event.type == SDL_KEYDOWN) {
-                        if (event.key.keysym.sym == SDLK_n) {
+                        if (event.key.keysym.sym == SDLK_RETURN) {
                             hover_col = 0;
                             board_new_game(board);
                             new_game = 1;
