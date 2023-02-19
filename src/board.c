@@ -147,12 +147,64 @@ int has_horizontal_connect(const Board *self)
     return 0;
 }
 
+
+/**
+ * Returns whether there is a horizontal line of four matching pieces on the
+ * board.
+ */
+int has_main_diagonal_connect(const Board *self)
+{
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3 - i; ++j) {
+            int piece = self->board[i + 7 * j];
+            if (piece == EMPTY) {
+                continue;
+            }
+
+            int count = 1;
+            for (int k = 1; k < 4; ++k) {
+                if (self->board[i + 7 * (j + k)] != piece) {
+                    break;
+                }
+
+                ++count;
+                if (count == 4) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    for (int i = 1; i < 4; ++i) {
+        for (int j = 0; j < 4 - i; ++j) {
+            int piece = self->board[6 * i + 7 * j];
+            if (piece == EMPTY) {
+                continue;
+            }
+
+            int count = 1;
+            for (int k = 1; k < 4; ++k) {
+                if (self->board[6 * i + 7 * (j + k)] != piece) {
+                    break;
+                }
+
+                ++count;
+                if (count == 4) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
 /**
  * Returns whether the game has reached a terminal position.
  */
 int board_game_over(const Board *self)
 {
-    if (has_horizontal_connect(self)) {
+    if (has_main_diagonal_connect(self)) {
         return 1;
     }
 
