@@ -118,11 +118,41 @@ int has_vertical_connect(const Board *self)
 }
 
 /**
+ * Returns whether there is a horizontal line of four matching pieces on the
+ * board.
+ */
+int has_horizontal_connect(const Board *self)
+{
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            int piece = self->board[i + 6 * j];
+            if (piece == EMPTY) {
+                continue;
+            }
+
+            int count = 1;
+            for (int k = 1; k < 4; ++k) {
+                if (self->board[i + 6 * (j + k)] != piece) {
+                    break;
+                }
+
+                ++count;
+                if (count == 4) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+/**
  * Returns whether the game has reached a terminal position.
  */
 int board_game_over(const Board *self)
 {
-    if (has_vertical_connect(self)) {
+    if (has_horizontal_connect(self)) {
         return 1;
     }
 
