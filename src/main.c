@@ -83,35 +83,61 @@ int main(int argc, char *argv[])
             if (event.type == SDL_KEYDOWN) {
                 int col;
                 switch (event.key.keysym.sym) {
-                    case SDLK_RETURN:
-                        board_drop_piece(board, hover_col);
-                        for (hover_col = 0; hover_col < 7; ++hover_col) {
-                            if (board_full_column(board, hover_col) == 0) {
-                                break;
-                            }
+                case SDLK_RETURN:
+                    board_drop_piece(board, hover_col);
+                    for (hover_col = 0; hover_col < 7; ++hover_col) {
+                        if (board_full_column(board, hover_col) == 0) {
+                            break;
                         }
-                        break;
-                    case SDLK_LEFT:
-                        for (col = hover_col - 1; col > -1; --col) {
-                            if (board_full_column(board, col) == 0) {
-                                hover_col = col;
-                                break;
-                            }
+                    }
+                    break;
+                case SDLK_LEFT:
+                    for (col = hover_col - 1; col > -1; --col) {
+                        if (board_full_column(board, col) == 0) {
+                            hover_col = col;
+                            break;
                         }
-                        break;
-                    case SDLK_RIGHT:
-                        for (col = hover_col + 1; col < 7; ++col) {
-                            if (board_full_column(board, col) == 0) {
-                                hover_col = col;
-                                break;
-                            }
+                    }
+                    break;
+                case SDLK_RIGHT:
+                    for (col = hover_col + 1; col < 7; ++col) {
+                        if (board_full_column(board, col) == 0) {
+                            hover_col = col;
+                            break;
                         }
-                        break;
+                    }
+                    break;
                 }
             }
         }
 
         board_render(board, sprites, hover_col);
+
+        if (board_game_over(board)) {
+            int new_game = 0;
+            for (;;) {
+                while (SDL_PollEvent(&event)) {
+                    if (event.type == SDL_QUIT) {
+                        board_destroy(board);
+                        texture_destroy(sprites);
+                        cleanup();
+                        return 0;
+                    }
+
+                    if (event.type == SDL_KEYDOWN) {
+                        if (event.key.keysym.sym == SDLK_n) {
+                            hover_col = 0;
+                            board_new_game(board);
+                            new_game = 1;
+                        }
+                    }
+                }
+
+                if (new_game) {
+                    break;
+                }
+            }
+        }
     }
 
     board_destroy(board);

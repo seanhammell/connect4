@@ -38,6 +38,17 @@ void board_destroy(Board *self)
 }
 
 /**
+ * Clears the board and sets red as the side to move.
+ */
+void board_new_game(Board *self)
+{
+    for (int i = 0; i < 42; ++i) {
+        self->board[i] = 0;
+    }
+    self->side = 2;
+}
+
+/**
  * Returns whether the column is full.
  */
 int board_full_column(const Board *self, const int col)
@@ -74,6 +85,48 @@ void board_drop_piece(Board *self, const int col)
 {
     self->board[6 * col + first_open_row(self, col)] = self->side;
     self->side ^= 1;
+}
+
+/**
+ * Returns whether there is a vertical line of four matching pieces on the
+ * board.
+ */
+int has_vertical_connect(const Board *self)
+{
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            int piece = self->board[6 * i + j];
+            if (piece == EMPTY) {
+                continue;
+            }
+
+            int count = 1;
+            for (int k = 1; k < 4; ++k) {
+                if (self->board[6 * i + j + k] != piece) {
+                    break;
+                }
+
+                ++count;
+                if (count == 4) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+/**
+ * Returns whether the game has reached a terminal position.
+ */
+int board_game_over(const Board *self)
+{
+    if (has_vertical_connect(self)) {
+        return 1;
+    }
+
+    return 0;
 }
 
 /**
