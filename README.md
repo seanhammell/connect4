@@ -1,1 +1,1 @@
-# connect4
+# SDL Connect 4
