@@ -250,11 +250,30 @@ int has_anti_diagonal_connect(const Board *self)
 }
 
 /**
+ * returns whether the game is a draw due to a full board. This function should
+ * be called after testing for winning lines.
+ */
+int is_draw(const Board *self)
+{
+    for (int i = 0; i < 7; ++i) {
+        if (!board_full_column(self, i)) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+/**
  * Returns whether the game has reached a terminal position.
  */
 int board_game_over(const Board *self)
 {
     if (has_vertical_connect(self) || has_horizontal_connect(self) || has_main_diagonal_connect(self) || has_anti_diagonal_connect(self)) {
+        return 1;
+    }
+
+    if (is_draw(self)) {
         return 1;
     }
 
